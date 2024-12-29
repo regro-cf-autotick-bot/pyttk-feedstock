@@ -1,31 +1,30 @@
 {% set name = "pyttk" %}
 {% set version = "0.3.2" %}
-{% set file_ext = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash_value = "5ac911938d0b08280432badc0b46f4dbc37c5567364191a9374a7b654c4f6d02" %}
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  fn: '{{ name }}-{{ version }}.{{ file_ext }}'
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ file_ext }}
-  '{{ hash_type }}': '{{ hash_value }}'
+  fn: '{{ name }}-{{ version }}.tar.gz'
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  'sha256': '5ac911938d0b08280432badc0b46f4dbc37c5567364191a9374a7b654c4f6d02'
 
 build:
-  number: 0
-  script: python setup.py install
+  number: 1
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
   noarch: python
 
 requirements:
-  build:
-    - python
+  host:
+    - python {{ python_min }}
   run:
-    - python
+    - python >={{ python_min }}
     - tk
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     ttk
 
